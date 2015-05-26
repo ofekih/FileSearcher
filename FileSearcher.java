@@ -56,7 +56,9 @@ public final class FileSearcher	{
 	}
 
 	public static ArrayList<File> findFiles(String name, File currentFolder, int searchType)	{
-		return findFilesR(getName(name), getExtension(name), getFolder(currentFolder, searchType), searchType, new ArrayList<File>());
+		if (getName(name).equals("*"))
+			return findFiles(currentFolder, searchType, getExtension(name));
+		else return findFilesR(getName(name), getExtension(name), getFolder(currentFolder, searchType), searchType, new ArrayList<File>());
 	}
 
 	private static ArrayList<File> findFilesR(String name, String extension, final File folder, int searchType, ArrayList<File> files)	{
@@ -75,7 +77,6 @@ public final class FileSearcher	{
 	}
 
 	public static ArrayList<File> findFiles(File currentFolder, int searchType, String... extensions)	{
-		if (extensions.length == 0)	return null;
 		return findFilesR(getFolder(currentFolder, searchType), searchType, getExtensions(extensions), new ArrayList<File>());
 	}
 
@@ -84,6 +85,8 @@ public final class FileSearcher	{
 			for (final File fileEntry : folder.listFiles())
 				if (fileEntry.isDirectory() && !(searchType == CURRENT_FOLDER))
 					findFilesR(fileEntry, searchType, extensions, files);
+				else if (extensions.length == 0)
+					files.add(fileEntry);
 				else for (String extension : extensions)
 					if (getExtension(fileEntry.getName()).equals(extension))	{
 						files.add(fileEntry);
