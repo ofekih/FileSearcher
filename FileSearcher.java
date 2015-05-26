@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since  May 25th, 2015
  */
-public final class FileSearcher	{
+public final abstract class FileSearcher	{
 
 	/**
 	 * Searches in current folder only
@@ -28,8 +28,6 @@ public final class FileSearcher	{
 	 * The current directory as a file
 	 */
 	public final static File currentDirectory = new File(System.getProperty("user.dir"));
-
-	private FileSearcher()	{}	// to prevent initialization
 
 	private static File file = null;
 	/**
