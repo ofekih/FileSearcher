@@ -96,20 +96,26 @@ public final class FileSearcher	{
 		return files;
 	}
 
-	public static void printFiles(int searchType)	{
-		printFiles(currentDirectory, searchType);
+	public static void printFiles(int searchType, String... extensions)	{
+		printFiles(currentDirectory, searchType, extensions);
 	}
 
-	public static void printFiles(File currentFolder, int searchType)	{
-		printFilesR(getFolder(currentFolder, searchType), searchType);
+	public static void printFiles(File currentFolder, int searchType, String... extensions)	{
+		printFilesR(getFolder(currentFolder, searchType), searchType, getExtensions(extensions));
 	}
 
-	private static void printFilesR(final File folder, int searchType)	{
+	private static void printFilesR(final File folder, int searchType, String[] extensions)	{
 		try {
 			for (final File fileEntry : folder.listFiles())
 				if (fileEntry.isDirectory() && !(searchType == CURRENT_FOLDER))
-					printFilesR(fileEntry, searchType);
-				else System.out.println(fileEntry);
+					printFilesR(fileEntry, searchType, extensions);
+				else if (extensions.length == 0)
+					System.out.println(fileEntry);
+				else for (String extension : extensions)
+					if (getExtension(fileEntry.getName()).equals(extension))	{
+						System.out.println(fileEntry);
+						break;
+					}
 		}	catch(NullPointerException e)	{}
 	}
 
